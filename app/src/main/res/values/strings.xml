@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">BLE Demo</string>
+
+    <string name="ble_not_supported">BLE is not supported</string>
+    <string name="label_data">Data:</string>
+    <string name="label_device_address">Device address:</string>
+    <string name="label_state">State:</string>
+    <string name="no_data">No data</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="title_devices">BLE Device Scan</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+    <string name="unknown_device">Unknown device</string>
+    <string name="unknown_characteristic">Unknown characteristic</string>
+    <string name="unknown_service">Unknown service</string>
+
+    <!-- Menu items -->
+    <string name="menu_connect">CONNECT</string>
+    <string name="menu_disconnect">DISCONNECT</string>
+    <string name="menu_scan">SCAN</string>
+    <string name="menu_stop">STOP</string>
+
+    <!-- 扫描LE -->
+    <string name="scan_connected">Connected</string>
+    <string name="scan_disconnected">Disconnected</string>
+    <string name="scan_connect_timeout">Connect timeout</string>
+    <string name="scan_connection_error">Connection error</string>
+    <string name="scan_bt_disabled">Bluetooth of your mobile phone is turned off</string>
+
+    <!-- 已连接 -->
+    <string name="encrypt">Encrypt</string>
+    <string name="connected_send">Send</string>
+    <string name="connected_send_hex_hint" formatted="false">Enter 16 decimal characters, at most %d bytes</string>
+    <string name="connected_send_ascii_hint" formatted="false">Enter ascii characters, at most %d bytes</string>
+    <string name="input_bytes" formatted="false">Input %d bytes</string>
+    <string name="max_bytes" formatted="false">Up to %d bytes</string>
+
+    <!-- 模组设置 -->
+    <string name="ble_title">Device Parameters</string>
+    <string name="ble_read">Read</string>
+    <string name="ble_set">Set</string>
+    <string name="ble_set_adv_interval_hint">32~24000(Unit: 625μs)</string>
+    <string name="ble_set_conn_interval_hint">16~3200(Unit: 1.25ms)</string>
+
+    <!-- OAD -->
+    <string name="oad_start">Start</string>
+    <string name="oad_cancel">Cancel</string>
+    <string name="oad_load_file">Load file</string>
+    <string name="oad_please_select_a_device">Please select one device to program</string>
+    <string name="oad_please_select_a_image">Please select one image file</string>
+    <string name="oad_programming">Programming!</string>
+    <string name="oad_send_interval">Send Interval</string>
+
+    <!-- MTU -->
+    <string name="mtu_update">Update MTU</string>
+    <string name="mtu_no_device_connected">No device connected</string>
+
+    <string name="scan_tips_location_service_disabled">Location service is disabled</string>
+    <string name="scan_tips_no_location_permission">Scan BLE device need fine location permission</string>
+    <string name="no_read_external_storage_permission">Loading local OAD files requires access to the phone\'s storage</string>
+    <string name="to_grant_permission">Grant</string>
+    <string name="to_enable">Enable</string>
+</resources>

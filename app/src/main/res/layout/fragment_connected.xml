@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main"
+    android:orientation="vertical"
+    android:paddingBottom="5dp">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:gravity="center_vertical|end"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp">
+
+        <TextView
+            android:id="@+id/tv_input_bytes"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical" />
+
+        <CheckBox
+            android:id="@+id/cbox_hex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HEX"
+            android:textSize="14sp"
+            android:checked="true"
+            android:visibility="visible" />
+
+        <CheckBox
+            android:id="@+id/cbox_encrypt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/encrypt"
+            android:textSize="14sp"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="5dp">
+
+        <EditText
+            android:id="@+id/edt_msg"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white"
+            android:hint="@string/connected_send_hex_hint"
+            android:paddingStart="5dp"
+            android:paddingEnd="0dp"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/btn_sel"
+            android:text="@string/connected_send"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>

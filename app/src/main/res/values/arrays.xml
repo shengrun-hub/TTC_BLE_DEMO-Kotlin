@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fragment_titles">
+        <item>Scan LE</item>
+        <item>Connected\nDevices</item>
+        <item>MTU</item>
+    </string-array>
+    <string-array name="ble_set_item_titles">
+        <item>Device Name</item>
+        <item>Firmware Revision</item>
+        <item>Battery Level</item>
+        <item>Advertising Interval</item>
+        <item>Connection Interval</item>
+    </string-array>
+    <string-array name="oad_send_interval_values">
+        <item>15ms</item>
+        <item>20ms</item>
+        <item>24ms</item>
+        <item>30ms</item>
+        <item>40ms</item>
+        <item>48ms</item>
+        <item>60ms</item>
+        <item>96ms</item>
+    </string-array>
+    <string-array name="load_file_menus">
+        <item>Test file A</item>
+        <item>Test file B</item>
+        <item>Local file</item>
+    </string-array>
+</resources>

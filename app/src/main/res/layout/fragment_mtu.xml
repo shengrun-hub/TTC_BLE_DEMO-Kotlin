@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="0dp"
+        android:paddingEnd="6dp">
+
+        <Spinner
+            android:id="@+id/spinner_device"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <CheckBox
+            android:id="@+id/mtuBoxHex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HEX"
+            android:checked="true"
+            android:textSize="14sp"
+            android:visibility="visible" />
+
+        <CheckBox
+            android:id="@+id/box_encrypt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/encrypt" />
+    </LinearLayout>
+
+    <com.ttcble.leui.widget.LogView
+        android:id="@+id/mtuLogView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_gray"
+        android:padding="6dp" />
+
+    <EditText
+        android:id="@+id/edt_tx_data"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_white"
+        android:gravity="start|top"
+        android:padding="6dp"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="6dp">
+
+        <EditText
+            android:id="@+id/edt_mtu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white"
+            android:hint="23~251"
+            android:inputType="number"
+            android:maxLength="3"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:text="23" />
+
+        <TextView
+            android:id="@+id/btn_update_mtu"
+            style="@style/BtnStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/mtu_update" />
+
+        <TextView
+            android:id="@+id/btn_send"
+            style="@style/BtnStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/connected_send" />
+    </LinearLayout>
+</LinearLayout>

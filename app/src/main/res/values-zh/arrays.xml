@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fragment_titles">
+        <item>扫描LE</item>
+        <item>已连接</item>
+        <item>MTU</item>
+    </string-array>
+    <string-array name="ble_set_item_titles">
+        <item>设备名称</item>
+        <item>版本号</item>
+        <item>电量</item>
+        <item>广播间隔</item>
+        <item>连接间隔</item>
+    </string-array>
+    <string-array name="oad_send_interval_values">
+        <item>15ms</item>
+        <item>20ms</item>
+        <item>24ms</item>
+        <item>30ms</item>
+        <item>40ms</item>
+        <item>48ms</item>
+        <item>60ms</item>
+        <item>96ms</item>
+    </string-array>
+    <string-array name="load_file_menus">
+        <item>测试文件A</item>
+        <item>测试文件B</item>
+        <item>本地文件</item>
+    </string-array>
+</resources>
