@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TTC_BLE_DEMO-Kotlin.iml" filepath="$PROJECT_DIR$/.idea/modules/TTC_BLE_DEMO-Kotlin.iml" group="TTC_BLE_DEMO-Kotlin" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="TTC_BLE_DEMO-Kotlin/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TTC_BLE_DEMO-Kotlin.iml" filepath="$PROJECT_DIR$/.idea/modules/TTC_BLE_DEMO-Kotlin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/TTC_BLE_DEMO-Kotlin.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/TTC_BLE_DEMO-Kotlin.app.iml" />
     </modules>
   </component>
 </project>
