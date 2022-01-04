@@ -165,13 +165,13 @@ leScanResult.getLeScanRecord().getFirstManufacturerSpecificData();
 返回的status为0即表示通知已成功打开，之后设备端发送的数据会通过 ```onCharacteristicChanged(String address, BluetoothGattCharacteristic characteristic)```回调给到APP 
 
 ## 如果模块改过UUID，没有使用我司模块的默认UUID，收发数据可通过下面的代码实现
-假如使用如下的UUID（如果收发数据的UUID分别在不同的服务下面，需要定义两个服务UUID）：
-- 服务UUID：0000fff0-0000-1000-8000-00805f9b34fb  
-- 发送数据的UUID：0000fff1-0000-1000-8000-00805f9b34fb  
-- 接收数据的UUID：0000fff2-0000-1000-8000-00805f9b34fb  
+假如使用如下UUID（如果收发数据的UUID分别在不同的服务下面，需要定义两个服务UUID）：
 ```
+//服务UUID
 public static final UUID SERVICE_UUID = UUID.fromString("0000fff0-0000-1000-8000-00805f9b34fb");
+//发送数据的UUID
 public static final UUID WRITE_UUID = UUID.fromString("0000fff1-0000-1000-8000-00805f9b34fb");
+//接收数据的UUID
 public static final UUID NOTIFY_UUID = UUID.fromString("0000fff2-0000-1000-8000-00805f9b34fb");
 ```
 ### 发送数据
