@@ -11,7 +11,8 @@
         public void onServiceConnected(ComponentName name, IBinder service) {
             mBleService = ((BleService.LocalBinder) binder).getService(mBleCallBack);
             // mBleService.setMaxConnectedNumber(4);// 设置最大可连接从机数量，默认为4
-            mBleService.setConnectTimeout(5000);//设置APP端的连接超时时间（单位ms）
+            // mBleService.setConnectTimeout(3000);//设置APP端的连接超时时间（单位ms），默认3秒
+            mBleService.setDecode(false);//不解密默认UUID（0x1002）接收的数据，早期模块默认使用了加密
             mBleService.initialize();// 必须调用初始化函数
         }
     };
