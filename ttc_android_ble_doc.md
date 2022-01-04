@@ -54,13 +54,13 @@ implementation 'com.ttcble.android:blebase:1.1.8'
 ```
 ## 广播数据解析
 通过 onLeScan 返回的扫描结果获取广播数据  
-### 获取设备名称、LocalName、MAC：
+### 获取设备名称、LocalName、MAC
 ```
 leScanResult.getDevice().getName();//设备名称
 leScanResult.getDevice().getAddress();//设备MAC
 leScanResult.getLeScanRecord().getLocalName();
 ```
-### 获取厂商数据：
+### 获取厂商数据
 ```
 leScanResult.getLeScanRecord().getFirstManufacturerSpecificData();
 ```
