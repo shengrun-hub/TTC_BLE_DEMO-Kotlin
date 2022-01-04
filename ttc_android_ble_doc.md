@@ -19,9 +19,9 @@
 ```
 # 扫描蓝牙设备
 ## 启动扫描
-部分手机长时间扫描会扫不到设备，startScan()方法默认最多持续5秒。
 ```LeScanner.startScan(mOnLeScanListener);```  
-扫描蓝牙设备需要APP获得相关权限，Android12以下系统需要位置权限并且打开位置服务，Android12的权限配置可参考官方文档[Android 12 中的新蓝牙权限](https://developer.android.google.cn/about/versions/12/features/bluetooth-permissions)
+- 部分手机长时间扫描会扫不到设备，startScan()方法默认最多持续5秒，即如果不调用```LeScanner.stopScan()```，5秒后自动停止扫描；
+- 扫描蓝牙设备需要APP获得相关权限，Android12以下系统需要位置权限并且打开位置服务，Android12的权限配置可参考官方文档[Android 12 中的新蓝牙权限](https://developer.android.google.cn/about/versions/12/features/bluetooth-permissions)。
 
 ## 广播数据解析
 蓝牙扫描回调：
@@ -58,7 +58,7 @@ leScanResult.getLeScanRecord().getFirstManufacturerSpecificData();
 ```
 
 ## 停止扫描
-```LeScanner.stopScan()```
+```LeScanner.stopScan();```
 
 # 连接设备
 ```mBleService.connect(mac, false);```
