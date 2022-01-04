@@ -45,7 +45,7 @@
         }
     };
 ```
-通过 onLeScan 返回的扫描结果获取广播数据：
+通过 onLeScan 返回的扫描结果获取广播数据：  
 （1）获取设备名称、LocalName、MAC：
 ```
 leScanResult.getDevice().getName();//设备名称
