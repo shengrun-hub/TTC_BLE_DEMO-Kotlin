@@ -25,7 +25,7 @@ dependencies {
 }
 ```
 如果要兼容Android4.3到5.0，可使用旧版本，
-[下载AndroidBLE_API_V1.1.6](https://pan.baidu.com/s/10NHbFRBLmjt7Sg3lpqA3dA)，提取码: rssb
+下载[AndroidBLE_API_V1.1.6](https://pan.baidu.com/s/10NHbFRBLmjt7Sg3lpqA3dA)，提取码: rssb
 
 [SDK使用说明](https://github.com/shengrun-hub/TTC_BLE_DEMO-Kotlin/blob/master/ttc_android_ble_doc.md)
 
