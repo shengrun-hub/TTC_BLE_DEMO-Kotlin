@@ -24,7 +24,10 @@ dependencies {
     implementation 'com.ttcble.android:blebase:1.1.8'
 }
 ```
-API文档可[下载SDK](https://pan.baidu.com/s/10NHbFRBLmjt7Sg3lpqA3dA)查看，提取码: rssb
+如果要兼容Android4.3到5.0，可使用旧版本，
+[下载AndroidBLE_API_V1.1.6](https://pan.baidu.com/s/10NHbFRBLmjt7Sg3lpqA3dA)，提取码: rssb
+
+[SDK使用说明](https://github.com/shengrun-hub/TTC_BLE_DEMO-Kotlin/blob/master/ttc_android_ble_doc.md)
 
 # 更新记录
 --- V1.1.8 ---  
