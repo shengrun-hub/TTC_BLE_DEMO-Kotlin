@@ -18,8 +18,47 @@
     };
 ```
 # 扫描蓝牙设备
+## 启动扫描
+部分手机长时间扫描会扫不到设备，startScan()方法默认最多持续5秒。
 ```LeScanner.startScan(mOnLeScanListener);```  
 扫描蓝牙设备需要APP获得相关权限，Android12以下系统需要位置权限并且打开位置服务，Android12的权限配置可参考官方文档[Android 12 中的新蓝牙权限](https://developer.android.google.cn/about/versions/12/features/bluetooth-permissions)
+
+## 广播数据解析
+蓝牙扫描回调：
+```
+    private final OnLeScanListener mOnLeScanListener = new OnLeScanListener() {
+        @Override
+        public void onScanStart() {
+        }
+
+        @Override
+        public void onLeScan(LeScanResult leScanResult) {
+            //发现蓝牙设备
+        }
+
+        @Override
+        public void onScanFailed(int errorCode) {
+        }
+
+        @Override
+        public void onScanStop() {
+        }
+    };
+```
+通过 onLeScan 返回的扫描结果获取广播数据：
+（1）获取设备名称、LocalName、MAC：
+```
+leScanResult.getDevice().getName();//设备名称
+leScanResult.getDevice().getAddress();//设备MAC
+leScanResult.getLeScanRecord().getLocalName();
+```
+（2）获取厂商数据：
+```
+leScanResult.getLeScanRecord().getFirstManufacturerSpecificData();
+```
+
+## 停止扫描
+```LeScanner.stopScan()```
 
 # 连接设备
 ```mBleService.connect(mac, false);```
@@ -150,5 +189,5 @@ mBleService.requestMtu(mac, 251);
 - 参数mac是设备的MAC地址
 - 参数mtu是最大传输的字节数加上3，251即每次最多传输248字节的数据  
 
-该方法会触发 onMtuChanged(String address, int mtu, int status) 回调，返回的status为0，即MTU更新成功，返回的mtu即最终使用的MTU（不一定跟请求时传的MTU值一样哦）  
+该方法会触发 onMtuChanged(String address, int mtu, int status) 回调，返回的status为0，即MTU更新成功，返回的mtu即最终使用的MTU（不一定跟请求时传的MTU值一样哦）
 MTU是建立连接的两端协商的，两端支持的最大MTU不一样，将使用其中较小的那个值。
