@@ -1,3 +1,6 @@
+# API参考
+本页面是TTC Android BLE SDK的使用说明，API参考可下载离线HTML文档进行查看：[点击此处下载](链接: https://pan.baidu.com/s/1dCYpf_4mXmp8ttq26AchjA)，提取码 a93s。
+
 # 初始化蓝牙服务
 启动APP时绑定 BleService，然后在绑定成功后初始化 BleService  
 ```
