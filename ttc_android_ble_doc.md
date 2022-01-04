@@ -75,6 +75,6 @@ mBleService.setCharacteristicNotification(gatt, characteristic, true);//true即�
 mBleService.requestMtu(mac, 251);
 ```
 - 参数mac是设备的MAC地址
-- 参数mtu是最大传输的字节数加上3，251即每次最多传输248字节的数据
+- 参数mtu是最大传输的字节数加上3，251即每次最多传输248字节的数据  
 该方法会触发 onMtuChanged(String address, int mtu, int status) 回调，返回的status为0，即MTU更新成功，返回的mtu即最终使用的MTU（不一定跟请求时传的MTU值一样哦）  
 MTU是建立连接的两端协商的，两端支持的最大MTU不一样，将使用其中较小的那个值。
