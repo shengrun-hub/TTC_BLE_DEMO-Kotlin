@@ -6,12 +6,12 @@
 [SDK使用说明](https://github.com/shengrun-hub/TTC_BLE_DEMO-Kotlin/blob/master/ttc_android_ble_doc.md)
 
 # 更新记录
---- V1.1.8 ---  
+## V1.1.8  
 1、BleCallBack增加方法：onPhyUpdate、onPhyRead；  
 2、BleService增加方法：readPhy、setPreferredPhy；  
 3、PhyOADProxy增加方法：setOTACmd（设置从普通模式切换到OAD模式的指令）。  
   
---- V1.1.7 ---  
+## V1.1.7  
 1、修复Android5.0以下系统使用LeScanner扫描设备闪退的问题；  
 2、修复在子线程调用LeScanner的扫描方法闪退的问题；  
 3、支持TI大包OAD升级；  
