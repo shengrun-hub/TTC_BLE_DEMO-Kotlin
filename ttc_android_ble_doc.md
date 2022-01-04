@@ -159,9 +159,9 @@ leScanResult.getLeScanRecord().getFirstManufacturerSpecificData();
 - 参数encode是设定是否加密数据，该加密是指我司早期模块使用的一种加密方式，一般不用加密数据，传false就行
 
 ## 接收数据
-接收数据需要在连接设备后打开数据通知，即常说的打开notify，订阅通知
-```mBleService.enableNotification(mac);```
-该方法调用成功（即返回true），会触发 BleCallBack 的回调：```onDescriptorWrite(String address, BluetoothGattDescriptor descriptor, int status)```，  
+接收数据需要在连接设备后打开数据通知，即常说的打开notify，订阅通知  
+```mBleService.enableNotification(mac);```  
+- 该方法调用成功（即返回true），会触发 BleCallBack 的回调：```onDescriptorWrite(String address, BluetoothGattDescriptor descriptor, int status)```，  
 返回的status为0即表示通知已成功打开，之后设备端发送的数据会通过 ```onCharacteristicChanged(String address, BluetoothGattCharacteristic characteristic)```回调给到APP 
 
 ## 如果模块改过UUID，没有使用我司模块的默认UUID，收发数据可通过下面的代码实现
