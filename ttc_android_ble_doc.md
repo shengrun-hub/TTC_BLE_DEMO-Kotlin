@@ -52,7 +52,7 @@ implementation 'com.ttcble.android:blebase:1.1.8'
         }
     };
 ```
-## 广播数据解析
+## 广播数据
 通过 onLeScan 返回的扫描结果获取广播数据  
 ### 获取设备名称、LocalName、MAC
 ```
