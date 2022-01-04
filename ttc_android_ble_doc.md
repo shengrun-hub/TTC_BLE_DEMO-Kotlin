@@ -31,8 +31,7 @@ implementation 'com.ttcble.android:blebase:1.1.8'
 - 部分手机长时间扫描会扫不到设备，startScan()方法默认最多持续5秒，即如果不调用```LeScanner.stopScan()```，5秒后自动停止扫描；
 - 扫描蓝牙设备需要APP获得相关权限，Android12以下系统需要位置权限并且打开位置服务，Android12的权限配置可参考官方文档[Android 12 中的新蓝牙权限](https://developer.android.google.cn/about/versions/12/features/bluetooth-permissions)。
 
-## 广播数据解析
-蓝牙扫描回调：
+## 蓝牙扫描回调：
 ```
     private final OnLeScanListener mOnLeScanListener = new OnLeScanListener() {
         @Override
@@ -53,14 +52,15 @@ implementation 'com.ttcble.android:blebase:1.1.8'
         }
     };
 ```
+## 广播数据解析
 通过 onLeScan 返回的扫描结果获取广播数据：  
-（1）获取设备名称、LocalName、MAC：
+### 获取设备名称、LocalName、MAC：
 ```
 leScanResult.getDevice().getName();//设备名称
 leScanResult.getDevice().getAddress();//设备MAC
 leScanResult.getLeScanRecord().getLocalName();
 ```
-（2）获取厂商数据：
+### 获取厂商数据：
 ```
 leScanResult.getLeScanRecord().getFirstManufacturerSpecificData();
 ```
