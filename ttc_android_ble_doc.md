@@ -128,8 +128,6 @@ leScanResult.getLeScanRecord().getFirstManufacturerSpecificData();
             //调试时可以在这里打印status来看数据有没有发送成功
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 String uuid = characteristic.getUuid().toString();
-                //如果发送数据加密，可以先把characteristic.getValue()获取的数据解密一下再打印
-                //byte[] decodedData = new EncodeUtil().decodeMessage(characteristic.getValue());
                 Log.i(TAG, "onCharacteristicWrite() - " + address + ", " + uuid
                         + "\n len=" + characteristic.getValue().length
                         + " [" + DataUtil.byteArrayToHex(characteristic.getValue()) + ']');
