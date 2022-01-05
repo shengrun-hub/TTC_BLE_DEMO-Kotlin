@@ -80,7 +80,7 @@ leScanResult.getLeScanRecord().getFirstManufacturerSpecificData();
 
 # 蓝牙交互
 ## 蓝牙事件相关的回调
-后面提到的回调方法都是 BleCallBack 的方法
+后面提到的回调方法都是 BleCallBack 的方法，**回调方法的 address 参数即设备MAC**
 ```
     private final BleCallBack mBleCallBack = new BleCallBack() {
 
