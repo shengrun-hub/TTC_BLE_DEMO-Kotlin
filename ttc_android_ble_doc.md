@@ -3,7 +3,7 @@
 
 # Android Studio添加SDK依赖：
 ```
-implementation 'com.ttcble.android:blebase:1.1.8'
+implementation 'com.ttcble.android:blebase:1.2.0'
 ```
 
 # 初始化蓝牙服务
