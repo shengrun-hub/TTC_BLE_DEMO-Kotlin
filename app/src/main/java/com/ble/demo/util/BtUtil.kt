@@ -21,13 +21,9 @@ class BtUtil private constructor() {
     private var mEncrypt = false
 
     fun setBleService(binder: IBinder) {
-        /**
-         * 初始化蓝牙服务
-         */
+        // 初始化蓝牙服务
         LeProxy.instance.setService(binder)
-        /**
-         * 添加蓝牙事件监听
-         */
+        // 添加蓝牙事件监听
         LeProxy.instance.addCallback(mBleCallBack)
 
         //获取BleService实例，Demo的部分功能LeProxy没有封装

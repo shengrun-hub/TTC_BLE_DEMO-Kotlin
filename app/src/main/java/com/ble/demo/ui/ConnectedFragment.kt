@@ -1,5 +1,6 @@
 package com.ble.demo.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -15,6 +16,8 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,18 +32,19 @@ import com.ble.utils.DimensUtil
 import com.ble.utils.TimeUtil
 import com.ttcble.leui.LeProxy
 import kotlinx.android.synthetic.main.fragment_connected.*
-import java.util.*
 
+@SuppressLint("MissingPermission")
 class ConnectedFragment : Fragment() {
 
     private var mSelectedAddressList = ArrayList<String>()
     private lateinit var mDeviceListAdapter: ConnectedDeviceListAdapter
     private lateinit var mInputWatcher: HexAsciiWatcher
+    private var mActivityLauncher: ActivityResultLauncher<Intent>? = null
 
     private val mLocalReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
-            val address = intent.getStringExtra(BtUtil.EXTRA_ADDRESS)
+            val address = intent.getStringExtra(BtUtil.EXTRA_ADDRESS)!!
             when (intent.action) {
                 BtUtil.ACTION_GATT_DISCONNECTED -> {
                     mSelectedAddressList.remove(address)
@@ -54,7 +58,7 @@ class ConnectedFragment : Fragment() {
     private fun displayRxData(intent: Intent) {
         if (cbox_hex == null) return
 
-        val address = intent.getStringExtra(BtUtil.EXTRA_ADDRESS)
+        val address = intent.getStringExtra(BtUtil.EXTRA_ADDRESS)!!
         val uuid = intent.getStringExtra(BtUtil.EXTRA_UUID)
         val data = intent.getByteArrayExtra(BtUtil.EXTRA_DATA)
         val device = mDeviceListAdapter.getDevice(address)
@@ -86,8 +90,17 @@ class ConnectedFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mActivityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == Activity.RESULT_OK) {
+                    val hexStr = it.data!!.getStringExtra(HexInputActivity.EXTRA_HEX_STRING)!!
+                    edt_msg?.setText(hexStr)
+                    edt_msg?.setSelection(hexStr.length)
+                }
+            }
         mDeviceListAdapter = ConnectedDeviceListAdapter()
-        LocalBroadcastManager.getInstance(activity!!).registerReceiver(mLocalReceiver, makeFilter())
+        LocalBroadcastManager.getInstance(requireActivity())
+            .registerReceiver(mLocalReceiver, makeFilter())
     }
 
     override fun onCreateView(
@@ -140,18 +153,6 @@ class ConnectedFragment : Fragment() {
         }
     }
 
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        if (requestCode == REQ_HEX_INPUT && resultCode == Activity.RESULT_OK) {
-            val hexStr = data!!.getStringExtra(HexInputActivity.EXTRA_HEX_STRING)
-            edt_msg?.setText(hexStr)
-            edt_msg?.setSelection(hexStr.length)
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
 
     // 向勾选的设备发送数据
     private fun send() {
@@ -200,6 +201,7 @@ class ConnectedFragment : Fragment() {
         }
     }
 
+
     override fun onResume() {
         super.onResume()
         Log.i(TAG, "onResume()")
@@ -217,7 +219,7 @@ class ConnectedFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(activity!!).unregisterReceiver(mLocalReceiver)
+        LocalBroadcastManager.getInstance(requireActivity()).unregisterReceiver(mLocalReceiver)
     }
 
 

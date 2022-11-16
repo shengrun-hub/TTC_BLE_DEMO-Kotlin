@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private val mLocalReceiver: BroadcastReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
-            val address = intent.getStringExtra(BtUtil.EXTRA_ADDRESS)
+            val address = intent.getStringExtra(BtUtil.EXTRA_ADDRESS)!!
             when (intent.action) {
                 BtUtil.ACTION_GATT_CONNECTED -> showToast(R.string.scan_connected, address)
                 BtUtil.ACTION_GATT_DISCONNECTED -> showToast(R.string.scan_disconnected, address)
@@ -104,13 +104,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (!BluetoothAdapter.getDefaultAdapter().isEnabled) {
-            //申请打开手机蓝牙，requestCode为LeScanner.REQUEST_ENABLE_BT
-            LeScanner.requestEnableBluetooth(this)
-        }
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == LeScanner.REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {

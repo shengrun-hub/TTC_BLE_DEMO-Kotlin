@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TTC_BLE_DEMO-Kotlin.iml" filepath="$PROJECT_DIR$/.idea/modules/TTC_BLE_DEMO-Kotlin.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/TTC_BLE_DEMO-Kotlin.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/TTC_BLE_DEMO-Kotlin.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/TTC_BLE_DEMO-Kotlin.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/TTC_BLE_DEMO-Kotlin.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/TTC_BLE_DEMO-Kotlin.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/TTC_BLE_DEMO-Kotlin.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/TTC_BLE_DEMO-Kotlin.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/TTC_BLE_DEMO-Kotlin.app.unitTest.iml" />
     </modules>
   </component>
 </project>

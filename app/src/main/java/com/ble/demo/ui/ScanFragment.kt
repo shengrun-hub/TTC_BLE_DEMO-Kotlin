@@ -15,15 +15,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ble.api.DataUtil
-import com.ble.ble.scan.LeScanResult
-import com.ble.ble.scan.LeScanner
-import com.ble.ble.scan.OnLeScanListener
+import com.ble.ble.scan.*
 import com.ble.demo.LeDevice
 import com.ble.demo.R
 import com.ble.utils.DimensUtil
 import com.ttcble.leui.LeProxy
 import kotlinx.android.synthetic.main.fragment_scan.*
-import java.util.*
 
 class ScanFragment : Fragment(), OnLeScanListener {
 
@@ -37,9 +34,7 @@ class ScanFragment : Fragment(), OnLeScanListener {
                 val state =
                     intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.STATE_OFF)
                 if (state == BluetoothAdapter.STATE_ON) {
-                    if (checkLeScan()) {
-                        LeScanner.startScan(this@ScanFragment)
-                    }
+                    scanDevices()
                 }
             }
         }
@@ -63,63 +58,84 @@ class ScanFragment : Fragment(), OnLeScanListener {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout?.setOnRefreshListener {
             mDeviceAdapter.clear()
-            LeScanner.startScan(this)
+            scanDevices()
         }
 
         scanDeviceListView.layoutManager = LinearLayoutManager(activity)
         scanDeviceListView.adapter = mDeviceAdapter
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (checkLeScan()) {
-            LeScanner.startScan(this)
-        }
+    override fun onStart() {
+        super.onStart()
+        scanDevices()
     }
 
+    private fun scanDevices() {
+        LeScanner.requestScan(this, REQ_SCAN_DEVICE, object : ScanRequestCallback() {
+            override fun onBluetoothDisabled() {
+                LeScanner.requestEnableBluetooth(requireActivity())
+            }
 
-    private fun checkLeScan(): Boolean {
-        if (BluetoothAdapter.getDefaultAdapter().isEnabled) {
-            if (Build.VERSION.SDK_INT >= 23) {
-                //TODO Android6.0开始，扫描是个麻烦事，得检测APP有没有定位权限，手机定位有没有开启
-                if (!LeScanner.hasLocationPermission(activity!!)) {
-                    showAlertDialog(
-                        R.string.scan_tips_no_location_permission,
-                        R.string.to_grant_permission,
-                        DialogInterface.OnClickListener { _, _ ->
-                            LeScanner.startAppDetailsActivity(activity!!)
-                        })
-                    return false
-                } else if (!LeScanner.isLocationEnabled(activity!!)) {
-                    showAlertDialog(
-                        R.string.scan_tips_location_service_disabled,
-                        R.string.to_enable,
-                        DialogInterface.OnClickListener { _, _ ->
-                            LeScanner.requestEnableLocation(activity!!)
-                        })
-                    return false
+            override fun shouldShowPermissionRationale(request: ScanPermissionRequest) {
+                showPermissionDialog { _, _ ->
+                    request.proceed()
                 }
             }
-            return true
-        }
-        return false
+
+            override fun onPermissionDenied() {
+                showPermissionDialog { _, _ ->
+                    LeScanner.startAppDetailsActivity(requireActivity())
+                }
+            }
+
+            override fun onLocationServiceDisabled() {
+                //Android12以下系统才会触发该回调方法
+                showLocationServiceDialog()
+            }
+
+            override fun onReady() {
+                //准备就绪，开始扫描
+                LeScanner.startScan(this@ScanFragment)
+            }
+        })
     }
 
-
-    private fun showAlertDialog(
-        msgId: Int,
-        okBtnTextId: Int,
-        okListener: DialogInterface.OnClickListener
-    ) {
-        activity?.also {
-            AlertDialog.Builder(it)
-                .setCancelable(false)
-                .setMessage(msgId)
-                .setPositiveButton(okBtnTextId, okListener)
-                .setNegativeButton(android.R.string.cancel) { _, _ ->
-                    it.finish()
-                }.show()
+    private fun showPermissionDialog(listener: DialogInterface.OnClickListener) {
+        val msg = if (Build.VERSION.SDK_INT < 31) {
+            R.string.scan_tips_no_location_permission
+        } else {
+            R.string.scan_tips_no_location_permission
         }
+        AlertDialog.Builder(requireActivity())
+            .setCancelable(false)
+            .setMessage(msg)
+            .setPositiveButton(R.string.proceed, listener)
+            .setNegativeButton(R.string.cancel) { _, _ -> /**/ }
+            .show()
+    }
+
+    //Android12以下系统需要开启位置服务
+    private fun showLocationServiceDialog() {
+        AlertDialog.Builder(requireActivity())
+            .setCancelable(false)
+            .setMessage(R.string.scan_tips_location_service_disabled)
+            .setPositiveButton(R.string.proceed) { _, _ ->
+                LeScanner.requestEnableLocation(
+                    requireActivity()
+                )
+            }
+            .setNegativeButton(R.string.cancel) { _, _ -> /**/ }
+            .show()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        //todo LeScanner.requestScan() 请求扫描需要处理权限结果
+        LeScanner.onRequestPermissionsResult(this, requestCode, permissions, grantResults)
     }
 
     override fun onPause() {
@@ -147,7 +163,7 @@ class ScanFragment : Fragment(), OnLeScanListener {
             .append("\n\n")
             .append(record.toString())
 
-        AlertDialog.Builder(activity!!)
+        AlertDialog.Builder(requireActivity())
             .setMessage(sb.toString())
             .setPositiveButton("Close", null)
             .show()
@@ -246,5 +262,7 @@ class ScanFragment : Fragment(), OnLeScanListener {
 
     companion object {
         private const val TAG = "ScanFragment"
+
+        private const val REQ_SCAN_DEVICE = 11
     }
 }

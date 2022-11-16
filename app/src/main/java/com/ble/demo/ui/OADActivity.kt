@@ -1,5 +1,6 @@
 package com.ble.demo.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.bluetooth.BluetoothGatt
@@ -104,7 +105,7 @@ class OADActivity : AppCompatActivity(), View.OnClickListener, OADListener {
                     val uuid =
                         intent.getStringExtra(BtUtil.EXTRA_UUID)
                     val data =
-                        intent.getByteArrayExtra(BtUtil.EXTRA_DATA)
+                        intent.getByteArrayExtra(BtUtil.EXTRA_DATA)!!
                     if (GattAttributes.TI_OAD_Image_Identify.toString() == uuid) {
                         val ver = DataUtil.buildUint16(data[1], data[0]).toInt().and(0xFFFF)
                         val imgType = if (ver and 1 == 1) 'B' else 'A'
@@ -233,6 +234,7 @@ class OADActivity : AppCompatActivity(), View.OnClickListener, OADListener {
             }
         }
 
+        @SuppressLint("MissingPermission")
         override fun run() {
             if (charIdentify != null) {
                 when (i) {

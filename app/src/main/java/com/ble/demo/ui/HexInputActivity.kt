@@ -28,7 +28,7 @@ class HexInputActivity : AppCompatActivity() {
         var len: Int
         if (!TextUtils.isEmpty(hexStr)) {
             editText.setText(hexStr)
-            editText.setSelection(hexStr.length)
+            editText.setSelection(hexStr!!.length)
             len = hexStr.length
             len = if (len % 2 == 0) len / 2 else len / 2 + 1
         } else {

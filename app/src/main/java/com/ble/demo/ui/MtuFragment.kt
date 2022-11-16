@@ -88,7 +88,8 @@ class MtuFragment : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        LocalBroadcastManager.getInstance(activity!!).registerReceiver(mGattReceiver, makeFilter())
+        LocalBroadcastManager.getInstance(requireActivity())
+            .registerReceiver(mGattReceiver, makeFilter())
     }
 
     override fun onCreateView(
@@ -140,7 +141,7 @@ class MtuFragment : Fragment(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(activity!!).unregisterReceiver(mGattReceiver)
+        LocalBroadcastManager.getInstance(requireActivity()).unregisterReceiver(mGattReceiver)
     }
 
     override fun onClick(v: View) {
@@ -194,7 +195,7 @@ class MtuFragment : Fragment(), View.OnClickListener {
             deviceArr = arrayOf(getString(R.string.mtu_no_device_connected))
         }
         mDeviceAdapter = ArrayAdapter(
-            activity, android.R.layout.simple_spinner_dropdown_item, deviceArr
+            requireActivity(), android.R.layout.simple_spinner_dropdown_item, deviceArr
         )
         spinner_device?.adapter = mDeviceAdapter
         spinner_device?.onItemSelectedListener = object : OnItemSelectedListener {
