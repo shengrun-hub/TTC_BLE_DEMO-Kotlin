@@ -6,6 +6,15 @@
 [SDK使用文档](https://github.com/shengrun-hub/TTC_BLE_DEMO-Kotlin/blob/master/ttc_android_ble_doc.md)
 
 # 更新记录
+
+## V1.2.0  
+- 修复Android12蓝牙未打开时请求扫描闪退的问题；  
+- 删除对permissionsdispatcher的依赖，完全脱离jcenter。  
+
+## V1.1.9  
+- 适配Android12；  
+- 由jcenter转移到Maven Central。  
+  
 ## V1.1.8  
 - BleCallBack增加方法：onPhyUpdate、onPhyRead；  
 - BleService增加方法：readPhy、setPreferredPhy；  
