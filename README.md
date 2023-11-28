@@ -3,7 +3,7 @@
 - 系统要求：不低于Android5.0；  
 - 工程需要使用AndroidX，如果之前使用的1.1.7以下的版本，可以参照[AndroidXMigrate](https://github.com/shengrun-hub/AndroidXMigrate)将工程迁移到AndroidX。
 
-[Java版本的代码](https://github.com/shengrun-hub/TTC_BLE_DEMO-Java/tree/master)
+[Java版本的代码](https://github.com/shengrun-hub/TTC_BLE_DEMO-Java/tree/master)  
 [SDK使用文档](https://github.com/shengrun-hub/TTC_BLE_DEMO-Kotlin/blob/master/ttc_android_ble_doc.md)
 
 # 更新记录
