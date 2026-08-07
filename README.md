@@ -8,6 +8,16 @@
 
 # 更新记录
 
+## V1.2.2
+- 修改OAD缓存为512K；
+- 扫描支持蓝牙5.0的广播；
+- 增加 Android 12 新增的 onServiceChanged 回调；
+- 支持Android13新增的接收数据的回调，Android13+系统发送数据使用Android13新增的发送接口；
+- 支持Android15新增的16KB page sizes。
+
+## V1.2.1
+- 增加CC2340 OAD。
+
 ## V1.2.0  
 - 修复Android12蓝牙未打开时请求扫描闪退的问题；  
 - 删除对permissionsdispatcher的依赖，完全脱离jcenter。  

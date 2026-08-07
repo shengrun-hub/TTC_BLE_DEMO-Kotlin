@@ -3,8 +3,10 @@ package com.ble.demo.util
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
+import android.bluetooth.BluetoothGattDescriptor
 import android.content.Intent
 import android.os.IBinder
+import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.ble.api.DataUtil
 import com.ble.ble.BleCallBack
@@ -23,11 +25,12 @@ class BtUtil private constructor() {
     fun setBleService(binder: IBinder) {
         // 初始化蓝牙服务
         LeProxy.instance.setService(binder)
-        // 添加蓝牙事件监听
-        LeProxy.instance.addCallback(mBleCallBack)
 
         //获取BleService实例，Demo的部分功能LeProxy没有封装
-        mBleService = LeProxy.instance.getService()
+        mBleService = LeProxy.instance.getService()?.apply {
+            // 添加蓝牙事件监听
+            addBleCallBack(mBleCallBack)
+        }
 
         //mBleService?.maxConnectedNumber = 4 //设置最大可连接从机数量，默认为4
         //mBleService?.connectTimeout = 5000 //设置APP端的连接超时时间（单位ms）
@@ -70,6 +73,7 @@ class BtUtil private constructor() {
             mBleService!!.connectedDevices
         } else ArrayList()
 
+    private var isMtuUpdatedBySelf = false
 
     /**
      * BleCallBack集合了所有的蓝牙交互事件
@@ -97,17 +101,37 @@ class BtUtil private constructor() {
         override fun onServicesDiscovered(address: String) {
             //TODO !!!检索服务成功，到这一步才可以与从机进行数据交互，有些手机可能需要延时几百毫秒才能数据交互
             // 打开默认的数据接收通道【0x1002】，这一步成功APP才能收到数据
-            LeProxy.instance.enableNotification(address)
+            isMtuUpdatedBySelf = true
+            LeProxy.instance.requestMtu(address, 251)
             updateBroadcast(address, ACTION_GATT_SERVICES_DISCOVERED)
+        }
+
+        override fun onMtuChanged(address: String, mtu: Int, status: Int) {
+            if (isMtuUpdatedBySelf) {
+                // OAD的时候也会更新MTU，防止重复开启Notify
+                isMtuUpdatedBySelf = false
+                LeProxy.instance.enableNotification(address)
+            }
+            val intent = Intent(ACTION_MTU_CHANGED)
+            intent.putExtra(EXTRA_ADDRESS, address)
+            intent.putExtra(EXTRA_MTU, mtu)
+            intent.putExtra(EXTRA_STATUS, status)
+            sendBroadcast(intent)
+        }
+
+        override fun onDescriptorWrite(
+            address: String,
+            descriptor: BluetoothGattDescriptor,
+            status: Int
+        ) {
+            updateBroadcast(address, ACTION_DESCRIPTOR_WRITE)
         }
 
         override fun onCharacteristicChanged(
             address: String,
             characteristic: BluetoothGattCharacteristic
         ) {
-            //TODO 收到模块发来的数据
-            //Log.i(TAG, "onCharacteristicChanged() - $address, ${value2String(characteristic)}")
-            updateBroadcast(address, characteristic)
+            Log.i(TAG, "[old]onCharacteristicChanged() - $address, ${value2String(characteristic)}")
         }
 
         override fun onCharacteristicRead(
@@ -115,22 +139,32 @@ class BtUtil private constructor() {
             characteristic: BluetoothGattCharacteristic,
             status: Int
         ) {
+            Log.i(TAG, "[old]onCharacteristicRead() - $address, ${value2String(characteristic)}")
+        }
+
+        override fun onCharacteristicChanged(
+            address: String,
+            characteristic: BluetoothGattCharacteristic,
+            value: ByteArray
+        ) {
+            //TODO 收到模块发来的数据
+            Log.i(TAG, "[new]onCharacteristicChanged() - $address, ${value2String(characteristic)}")
+            updateBroadcast(address, characteristic, value)
+        }
+
+        override fun onCharacteristicRead(
+            address: String,
+            characteristic: BluetoothGattCharacteristic,
+            value: ByteArray,
+            status: Int
+        ) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 //读取到模块数据
-                //Log.i(TAG, "onCharacteristicRead() - $address, ${value2String(characteristic)}")
-                updateBroadcast(address, characteristic)
+                Log.i(TAG, "[new]onCharacteristicRead() - $address, ${value2String(characteristic)}")
+                updateBroadcast(address, characteristic, value)
             }
         }
-
-        override fun onMtuChanged(address: String, mtu: Int, status: Int) {
-            val intent = Intent(ACTION_MTU_CHANGED)
-            intent.putExtra(EXTRA_ADDRESS, address)
-            intent.putExtra(EXTRA_MTU, mtu)
-            intent.putExtra(EXTRA_STATUS, status)
-            sendBroadcast(intent)
-        }
     }
-
 
     private fun value2String(characteristic: BluetoothGattCharacteristic): String {
         val uuid = characteristic.uuid.toString().subSequence(4, 8)
@@ -143,11 +177,11 @@ class BtUtil private constructor() {
         sendBroadcast(intent)
     }
 
-    private fun updateBroadcast(address: String, characteristic: BluetoothGattCharacteristic) {
+    private fun updateBroadcast(address: String, characteristic: BluetoothGattCharacteristic, value: ByteArray) {
         val intent = Intent(ACTION_DATA_AVAILABLE)
         intent.putExtra(EXTRA_ADDRESS, address)
         intent.putExtra(EXTRA_UUID, characteristic.uuid.toString())
-        intent.putExtra(EXTRA_DATA, characteristic.value)
+        intent.putExtra(EXTRA_DATA, value)
         sendBroadcast(intent)
     }
 
@@ -159,7 +193,7 @@ class BtUtil private constructor() {
 
 
     companion object {
-        private const val TAG = "LeProxy"
+        private const val TAG = "BtUtil"
 
         //各蓝牙事件的广播action
         const val ACTION_CONNECT_TIMEOUT = "ACTION_CONNECT_TIMEOUT"
@@ -169,11 +203,13 @@ class BtUtil private constructor() {
         const val ACTION_GATT_SERVICES_DISCOVERED = "ACTION_GATT_SERVICES_DISCOVERED"
         const val ACTION_DATA_AVAILABLE = "ACTION_DATA_AVAILABLE"
         const val ACTION_MTU_CHANGED = "ACTION_MTU_CHANGED"
+        const val ACTION_DESCRIPTOR_WRITE = "ACTION_DESCRIPTOR_WRITE"
         const val EXTRA_ADDRESS = "EXTRA_ADDRESS"
         const val EXTRA_DATA = "EXTRA_DATA"
         const val EXTRA_UUID = "EXTRA_UUID"
         const val EXTRA_MTU = "EXTRA_MTU"
         const val EXTRA_STATUS = "EXTRA_STATUS"
+        const val EXTRA_NAME = "EXTRA_NAME"
 
         val instance = BtUtil()
     }

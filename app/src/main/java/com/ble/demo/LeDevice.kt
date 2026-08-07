@@ -6,9 +6,7 @@ import com.ble.ble.scan.LeScanResult
 class LeDevice {
     val address: String
     var name: String?
-    var rxData = "No data"
     var leScanRecord: LeScanRecord? = null
-    var isOadSupported = false
 
     constructor(name: String?, address: String) {
         this.name = name

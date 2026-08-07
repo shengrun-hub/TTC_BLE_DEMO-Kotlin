@@ -6,43 +6,46 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.MenuItem
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import com.ble.demo.R
+import com.ble.demo.databinding.ActivityHexInputBinding
 import com.ble.demo.util.HexAsciiWatcher
 import com.ble.demo.util.HexKeyboardUtil
-import kotlinx.android.synthetic.main.activity_hex_input.*
 
 /**
  * Created by JiaJiefei on 2016/8/18.
  */
-class HexInputActivity : AppCompatActivity() {
+class HexInputActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityHexInputBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-        setContentView(R.layout.activity_hex_input)
+        binding = ActivityHexInputBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         supportActionBar?.title = "Hex"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val hexStr = intent.getStringExtra(EXTRA_HEX_STRING)
         var len: Int
         if (!TextUtils.isEmpty(hexStr)) {
-            editText.setText(hexStr)
-            editText.setSelection(hexStr!!.length)
+            binding.editText.setText(hexStr)
+            binding.editText.setSelection(hexStr!!.length)
             len = hexStr.length
             len = if (len % 2 == 0) len / 2 else len / 2 + 1
         } else {
             len = 0
         }
-        tv_input_bytes.text = getString(R.string.input_bytes, len)
+        binding.tvInputBytes.text = getString(R.string.input_bytes, len)
         val maxLength = intent.getIntExtra(EXTRA_MAX_LENGTH, 40)
         val watcher = HexAsciiWatcher(this)
-        watcher.setHost(editText)
+        watcher.setHost(binding.editText)
         watcher.setTextType(HexAsciiWatcher.HEX)
         watcher.maxLength = maxLength
-        watcher.setIndicator(tv_input_bytes)
-        editText.addTextChangedListener(watcher)
-        val keyboardUtil = HexKeyboardUtil(this, editText, maxLength)
+        watcher.setIndicator(binding.tvInputBytes)
+        binding.editText.addTextChangedListener(watcher)
+        val keyboardUtil = HexKeyboardUtil(this, binding.editText, maxLength)
         keyboardUtil.showKeyboard()
         keyboardUtil.setOnDoneListener(object : HexKeyboardUtil.OnDoneListener {
             override fun done(input: String?) {

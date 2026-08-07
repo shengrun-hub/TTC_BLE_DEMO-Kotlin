@@ -6,6 +6,28 @@
     android:orientation="vertical"
     android:padding="12dp">
 
+    <!-- OADType selector -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/oad_type"
+            android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/oad_sp_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <!-- File path row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -30,6 +52,7 @@
             android:textSize="14sp" />
     </LinearLayout>
 
+    <!-- Status -->
     <TextView
         android:id="@+id/oad_tv_state"
         android:layout_width="match_parent"
@@ -38,90 +61,142 @@
         android:text="@string/connected"
         android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/oad_tv_image_type"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:gravity="center_vertical"
-        android:text="Target Image Type: unknown"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/oad_tv_time"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:gravity="center_vertical"
-        android:text="00:00"
-        android:textSize="16sp" />
+    <!-- Reset section — visible only when ffd0/ffd1 Reset service is detected -->
+    <!-- Status is shown via oad_tv_state (set to oad_waiting_reset in code) -->
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/oad_tv_progress"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="0%"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/oad_tv_bytes"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical|end"
-            android:text="0 / 0"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/oad_progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
+        android:id="@+id/oad_reset_input_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:max="100" />
-
-    <com.ttcble.leui.widget.LogView
-        android:id="@+id/logView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
         android:gravity="center_vertical"
-        android:paddingEnd="5dp"
-        android:paddingStart="5dp">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/oad_send_interval"
-            android:textSize="16sp" />
+        <EditText
+            android:id="@+id/oad_edt_reset"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_white"
+            android:hint="@string/oad_reset_command"
+            android:inputType="text"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:textSize="14sp" />
 
-        <Spinner
-            android:id="@+id/oad_sp_send_interval"
+        <Button
+            android:id="@+id/oad_btn_send_reset"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:visibility="visible" />
+            android:layout_height="40dp"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/btn_sel"
+            android:text="@string/oad_send_reset"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="14sp" />
     </LinearLayout>
 
-    <Space
+    <TextView
+        android:id="@+id/oad_tv_reset_status"
         android:layout_width="match_parent"
-        android:layout_height="12dp" />
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
+        android:visibility="gone" />
 
-    <Button
-        android:id="@+id/oad_btn_start"
+    <!-- OAD controls — hidden during Reset flow, shown when ffc0 OAD service is detected -->
+    <LinearLayout
+        android:id="@+id/oad_controls_section"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@drawable/btn_sel"
-        android:text="@string/oad_start"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="16sp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/oad_tv_image_type"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center_vertical"
+            android:text="Target Image Type: unknown"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/oad_tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center_vertical"
+            android:text="00:00"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/oad_tv_progress"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="0%"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/oad_tv_bytes"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:text="0 / 0"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/oad_progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:max="100" />
+
+        <com.ttcble.leui.widget.LogView
+            android:id="@+id/logView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center_vertical"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/oad_send_interval"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/oad_sp_send_interval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
+
+        <Button
+            android:id="@+id/oad_btn_start"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/btn_sel"
+            android:text="@string/oad_start"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="16sp" />
+    </LinearLayout>
+
 </LinearLayout>

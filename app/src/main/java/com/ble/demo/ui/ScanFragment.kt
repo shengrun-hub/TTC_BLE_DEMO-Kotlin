@@ -18,11 +18,15 @@ import com.ble.api.DataUtil
 import com.ble.ble.scan.*
 import com.ble.demo.LeDevice
 import com.ble.demo.R
+import com.ble.demo.databinding.FragmentScanBinding
+import com.ble.demo.util.BtUtil
 import com.ble.utils.DimensUtil
 import com.ttcble.leui.LeProxy
-import kotlinx.android.synthetic.main.fragment_scan.*
 
 class ScanFragment : Fragment(), OnLeScanListener {
+
+    private var _binding: FragmentScanBinding? = null
+    private val binding get() = _binding!!
 
     private val mDeviceAdapter = DeviceAdapter()
 
@@ -50,19 +54,25 @@ class ScanFragment : Fragment(), OnLeScanListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_scan, container, false)
+    ): View {
+        _binding = FragmentScanBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        refreshLayout?.setOnRefreshListener {
+        binding.refreshLayout.setOnRefreshListener {
             mDeviceAdapter.clear()
             scanDevices()
         }
 
-        scanDeviceListView.layoutManager = LinearLayoutManager(activity)
-        scanDeviceListView.adapter = mDeviceAdapter
+        binding.scanDeviceListView.layoutManager = LinearLayoutManager(activity)
+        binding.scanDeviceListView.adapter = mDeviceAdapter
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onStart() {
@@ -177,8 +187,8 @@ class ScanFragment : Fragment(), OnLeScanListener {
      * 扫描到蓝牙设备
      */
     override fun onLeScan(leScanResult: LeScanResult) {
-        val name = leScanResult.leScanRecord.localName
-        Log.i(TAG, "onLeScan() - " + leScanResult.device + " [" + name + "]")
+//        val name = leScanResult.leScanRecord.localName
+//        Log.i(TAG, "onLeScan() - " + leScanResult.device + " [" + name + "]")
         activity?.runOnUiThread {
             mDeviceAdapter.addDevice(LeDevice(leScanResult))
         }
@@ -189,7 +199,7 @@ class ScanFragment : Fragment(), OnLeScanListener {
 
     override fun onScanStop() {
         activity?.runOnUiThread {
-            refreshLayout?.isRefreshing = false
+            binding.refreshLayout.isRefreshing = false
         }
     }
 
@@ -214,7 +224,8 @@ class ScanFragment : Fragment(), OnLeScanListener {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
-            val view = layoutInflater.inflate(R.layout.item_device_list, null)
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_device_list, parent, false)
             val width = DimensUtil.getScreenWidth(parent.context)
             val height = ViewGroup.LayoutParams.WRAP_CONTENT
             view.layoutParams = ViewGroup.LayoutParams(width, height)
@@ -232,10 +243,14 @@ class ScanFragment : Fragment(), OnLeScanListener {
             holder.deviceAddress.text = device.address
             holder.itemView.setOnClickListener {
                 /**
-                 * 点击连接设备
+                 * 点击设备 → 连接并进入数据透传页面
                  */
                 LeScanner.stopScan()
                 LeProxy.instance.connect(device.address)
+                val intent = Intent(activity, DeviceActivity::class.java)
+                intent.putExtra(BtUtil.EXTRA_NAME, device.name)
+                intent.putExtra(BtUtil.EXTRA_ADDRESS, device.address)
+                startActivity(intent)
             }
             holder.itemView.setOnLongClickListener {
                 /**
